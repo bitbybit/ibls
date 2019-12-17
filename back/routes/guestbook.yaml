@@ -1,0 +1,9 @@
+list:
+    path: /guestbook/list
+    methods: [GET]
+    controller: App\Controller\Guestbook::list
+
+add:
+    path: /guestbook/add
+    methods: [POST]
+    controller: App\Controller\Guestbook::add

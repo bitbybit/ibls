@@ -1,0 +1,17 @@
+/* https://medium.com/code-better/css-units-for-font-size-px-em-rem-79f7e592bb97 */
+:root {
+    font-size: 62.5%;
+}
+
+@import "./variables";
+
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities";
+
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/pagination";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/alert";
