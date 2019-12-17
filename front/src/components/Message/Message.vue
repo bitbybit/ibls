@@ -5,6 +5,9 @@
             <span v-else>
                 {{ name }}
             </span>
+            <small class="text-muted pull-right">
+                {{ (new Date(date)) }}
+            </small>
         </h3>
         <div class="message__text">{{ text }}</div>
     </div>
@@ -12,6 +15,6 @@
 
 <script>
     export default {
-        props: ['name', 'email', 'text']
+        props: ['name', 'email', 'text', 'date']
     }
 </script>

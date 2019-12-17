@@ -14,6 +14,7 @@
                     v-bind:name="message.name"
                     v-bind:email="message.email"
                     v-bind:text="message.message"
+                    v-bind:date="message.date.date"
                     v-bind:key="message.id"
             ></message>
         </div>
