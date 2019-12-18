@@ -6,36 +6,29 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
-use App\Entity;
-use App\Repository;
+use App\REST;
 
 class Guestbook
 {
 
-    /** @var EntityManager  */
-    protected $em;
-
-    /** @var Repository\Ibls\GuestbookRepository */
-    private $repository;
-
     /** @var Request */
     private $request;
+
+    /** @var REST */
+    protected $REST;
 
     /**
      * Guestbook constructor.
      * @param RequestStack $request_stack
-     * @param EntityManager $em_ibls
+     * @param REST $REST
      */
     public function __construct(
         RequestStack $request_stack,
-        EntityManager $em_ibls
+        REST $REST
     )
     {
         $this->request = $request_stack->getCurrentRequest();
-        $this->em = $em_ibls;
-        $this->repository = $em_ibls->getRepository(Entity\Ibls\Guestbook::class);
+        $this->REST = $REST;
     }
 
     /**
@@ -50,15 +43,7 @@ class Guestbook
             throw new BadRequestHttpException;
         }
 
-        return new JsonResponse([
-            'messages' => $this->repository->getMessages(
-                (int)$limit,
-                (int)$offset
-            ),
-            'count' => $this->repository->getCount(),
-        ], 200, [
-            'Access-Control-Allow-Origin' => '*',
-        ]);
+        return $this->REST->listMessages((int)$limit, (int)$offset);
     }
 
     /**
@@ -71,32 +56,7 @@ class Guestbook
         $email = $this->request->request->get('email');
         $text = $this->request->request->get('message');
 
-        try {
-            $message = new Entity\Ibls\Guestbook;
-
-            $message
-                ->setName($name)
-                ->setEmail($email)
-                ->setMessage($text)
-            ;
-
-            $this->em->persist($message);
-            $this->em->flush();
-
-            return new JsonResponse([
-                'result' => 'ok',
-            ],200, [
-                'Access-Control-Allow-Origin' => '*',
-            ]);
-        } catch(ORMException $e) {
-
-            return new JsonResponse([
-                'result' => 'error',
-            ],200, [
-                'Access-Control-Allow-Origin' => '*',
-            ]);
-
-        }
+        return $this->REST->addMessage($name, $email, $text);
     }
 
 }
